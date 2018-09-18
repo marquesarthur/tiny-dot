@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class SymbolTable {
 
-
     private Map<String, Node> table;
 
     public SymbolTable() {
@@ -35,5 +34,4 @@ public class SymbolTable {
 //        }
         this.table.put(name, node);
     }
-
 }

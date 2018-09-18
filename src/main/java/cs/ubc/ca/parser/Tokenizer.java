@@ -12,11 +12,11 @@ import java.nio.file.Paths;
 
 public class Tokenizer {
 
-
     private static String program;
-    private String[] tokens;
-    private int currentToken;
 
+    private String[] tokens;
+
+    private int currentToken;
 
     public Tokenizer(String filename) {
         try {
@@ -51,7 +51,6 @@ public class Tokenizer {
         }
         return null;
     }
-
 
     public boolean hasNext() {
         return this.top() != null;

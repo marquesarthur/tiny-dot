@@ -1,6 +1,5 @@
 package cs.ubc.ca.parser;
 
-
 public class SymbolTableVisitor {
 
     private final Node root;
@@ -30,5 +29,4 @@ public class SymbolTableVisitor {
         this.visit(this.root);
         return this.symbols;
     }
-
 }

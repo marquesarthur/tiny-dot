@@ -18,7 +18,7 @@ public class ParserTest {
     public ExpectedException expectedEx = ExpectedException.none();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
     }
 
     @Test
@@ -62,7 +62,6 @@ public class ParserTest {
         this.dotProgram.parse();
     }
 
-
     @Test
     public void parseIncompleteShapeMissingPlease() {
         expectedEx.expect(ParseException.class);
@@ -70,6 +69,4 @@ public class ParserTest {
         this.dotProgram = new DotProgram("invalid/incomplete.shape.missing.identifier.tdot");
         this.dotProgram.parse();
     }
-
-
 }
