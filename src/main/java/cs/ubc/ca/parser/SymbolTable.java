@@ -1,18 +1,13 @@
 package cs.ubc.ca.parser;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class SymbolTable {
+public class SymbolTable implements Observer {
 
     private Map<String, Node> table;
 
     public SymbolTable() {
         this.table = new HashMap<>();
-    }
-
-    public static SymbolTable getSymbolTable(Node node) {
-        return new SymbolTableVisitor(node).generate();
     }
 
     public int size() {
@@ -28,10 +23,14 @@ public class SymbolTable {
     }
 
     public void insert(String name, Node node) {
-//        TODO: should this be here or somewhere elese?
-//        if (this.contains(name)) {
-//            throw new SymbolException(String.format("Variable was already declared: %s", name));
-//        }
         this.table.put(name, node);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof ShapeNode) {
+            ShapeNode shapeNode = (ShapeNode) arg;
+            this.insert(shapeNode.getShape().getName(), shapeNode);
+        }
     }
 }

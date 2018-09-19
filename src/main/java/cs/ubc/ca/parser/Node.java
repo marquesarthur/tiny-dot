@@ -20,7 +20,7 @@ public abstract class Node {
         return this;
     }
 
-    List<Node> getChildren() {
+    public List<Node> getChildren() {
         return this.children;
     }
 
