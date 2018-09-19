@@ -1,5 +1,7 @@
 package cs.ubc.ca.ui;
 
+import cs.ubc.ca.analysis.MissingDeclarationListener;
+import cs.ubc.ca.analysis.RedeclarationListener;
 import cs.ubc.ca.ast.AstVisitor;
 import cs.ubc.ca.parser.DigraphNode;
 import cs.ubc.ca.parser.Node;
@@ -34,6 +36,15 @@ public class DotProgram {
     }
 
     public void compile() {
+        this.parse();
+        AstVisitor visitor = new AstVisitor(this.ast);
+        MissingDeclarationListener missingDeclarationListener = new MissingDeclarationListener(this.symbols);
+        RedeclarationListener redeclarationListener = new RedeclarationListener(this.symbols);
+
+        visitor.addObserver(missingDeclarationListener);
+        visitor.addObserver(redeclarationListener);
+        visitor.traverse();
+
         this.ast.compile();
     }
 
