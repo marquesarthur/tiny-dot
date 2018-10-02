@@ -1,7 +1,7 @@
 package cs.ubc.ca.parser;
 
 import cs.ubc.ca.errors.ParseException;
-import cs.ubc.ca.ui.DotProgram;
+import cs.ubc.ca.dsl.DotProgram;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

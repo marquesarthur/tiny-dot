@@ -4,9 +4,8 @@ package cs.ubc.ca.parser;
 import cs.ubc.ca.errors.ParseException;
 import cs.ubc.ca.errors.TransformationException;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,10 +50,12 @@ public class DigraphNode extends Node {
 
     @Override
     public void compile() {
-        final String fileName = "my_target.dot";
+        final String fileName = this.target;
         final String encoding = "UTF-8";
         try {
-            writer = new PrintWriter(fileName, encoding);
+            File file = new File(fileName);
+
+            writer = new PrintWriter(file, encoding);
             writer.println(START);
             children.forEach(Node::compile);
             writer.println(END);
@@ -64,7 +65,6 @@ public class DigraphNode extends Node {
         } catch (UnsupportedEncodingException e) {
             throw new TransformationException(String.format("Unsuported enconding: [%s]", encoding), e);
         }
-
     }
 
     public List<ShapeNode> getShapes() {
