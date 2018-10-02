@@ -9,14 +9,9 @@ import cs.ubc.ca.parser.Node;
 import cs.ubc.ca.parser.SymbolTable;
 import cs.ubc.ca.parser.Tokenizer;
 
-import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class DotProgram {
 
@@ -61,15 +56,23 @@ public class DotProgram {
 
     public String getTarget() {
         try {
-
             ClassLoader classLoader = getClass().getClassLoader();
-            URI uri = classLoader.getResource(this.source).toURI();
-            uri.getPath();
-            String[] path = this.source.split("/");
-            String fileName = path[path.length - 1];
+            Path filepath = Paths.get(classLoader.getResource(this.source).toURI());
+            String[] strings = filepath.toString().split("/");
+            String out = "";
+            for (String partialPath: strings){
+                if ("".equals(partialPath)){
+                    continue;
+                }
+                out += "/";
+                out += partialPath;
+                if (partialPath.equals("tiny-dot")) {
+                    break;
+                }
+            }
 
-            URI filePath = getClass().getResource(String.format("build/%s", fileName)).toURI();
-            return filePath.getPath();
+            String fileName = String.format("target_%s", strings[strings.length - 1]);
+            return String.format("%s/src/main/resources/build/%s", out, fileName);
         } catch (URISyntaxException | NullPointerException e) {
             throw new ParseException(String.format("Unable to find a source file that can be compiled to a target: %s", this.source), e);
         }

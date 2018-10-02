@@ -24,3 +24,7 @@ hs_err_pid*
 
 .idea/
 target/
+
+src/main/resources/build/
+!src/main/resources/build/.gitkeep
+*.iml

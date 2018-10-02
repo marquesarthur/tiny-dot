@@ -24,9 +24,7 @@ public class MissingDeclarationTest {
     @Test
     public void analyzeValidInput() {
         this.dotProgram = new DotProgram("valid/input.tdot");
-        this.dotProgram.parse();
-
-        assertNotNull(this.dotProgram.getAst());
+        this.dotProgram.compile();
     }
 
     @Test
