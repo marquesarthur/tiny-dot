@@ -3,7 +3,6 @@ package cs.ubc.ca.analysis;
 import com.google.common.collect.Iterables;
 import cs.ubc.ca.dsl.ProgramOutput;
 import cs.ubc.ca.dsl.ProgramOutputStatus;
-import cs.ubc.ca.errors.CompileError;
 import cs.ubc.ca.dsl.DotProgram;
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,7 +32,7 @@ public class MissingDeclarationTest {
 
     @Test
     public void analyzeValidInput() {
-        this.dotProgram = new DotProgram("valid/input.tdot");
+        this.dotProgram = new DotProgram("valid/sample.tdot");
         ProgramOutput output = this.dotProgram.compile();
         assertEquals(output.getStatus(), ProgramOutputStatus.SUCCESS);
     }

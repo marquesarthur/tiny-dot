@@ -4,6 +4,7 @@ import cs.ubc.ca.parser.Node;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Collections;
 
 // see: https://www.baeldung.com/java-observer-pattern
 public class AstVisitor {
@@ -33,8 +34,10 @@ public class AstVisitor {
     }
 
     private void visitChildren(Node node) {
-        for (Node child : node.getChildren()) {
-            this.visit(child);
+        if (node.getChildren() != null) {
+            for (Node child : node.getChildren()) {
+                this.visit(child);
+            }
         }
     }
 

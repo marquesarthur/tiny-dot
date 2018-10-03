@@ -32,7 +32,7 @@ public class ParserTest {
 
     @Test
     public void parseValidInput() {
-        this.dotProgram = new DotProgram("valid/input.tdot");
+        this.dotProgram = new DotProgram("valid/sample.tdot");
         ProgramOutput output = this.dotProgram.parse();
         assertEquals(output.getStatus(), ProgramOutputStatus.SUCCESS);
         assertNotNull(this.dotProgram.getAst());
@@ -40,10 +40,10 @@ public class ParserTest {
 
     @Test
     public void parseNonExistingInput() {
-        this.dotProgram = new DotProgram("input.tdot");
+        this.dotProgram = new DotProgram("sample.tdot");
         ProgramOutput output = this.dotProgram.parse();
         assertEquals(output.getStatus(), ProgramOutputStatus.ERROR);
-        assertErrors(output, "Unable to load source: input.tdot");
+        assertErrors(output, "Unable to load source: sample.tdot");
     }
 
     @Test

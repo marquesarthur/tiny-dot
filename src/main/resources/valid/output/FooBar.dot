@@ -1,3 +1,9 @@
-make me a square called Foo please
-make me a square called Bar please
-connect Bar to Foo
+digraph G {
+
+Foo[shape=square]
+
+Bar[shape=square]
+
+Bar->Foo
+
+}

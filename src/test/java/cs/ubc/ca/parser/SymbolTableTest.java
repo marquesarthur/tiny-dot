@@ -23,7 +23,7 @@ public class SymbolTableTest {
 
     @Test
     public void parseValidInput() {
-        this.dotProgram = new DotProgram("valid/input.tdot");
+        this.dotProgram = new DotProgram("valid/sample.tdot");
         this.dotProgram.parse();
         assertNotNull(this.dotProgram.getSymbols());
         assertEquals(this.dotProgram.getSymbols().size(), 2);

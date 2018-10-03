@@ -10,6 +10,7 @@ import cs.ubc.ca.parser.DigraphNode;
 import cs.ubc.ca.parser.Node;
 import cs.ubc.ca.parser.SymbolTable;
 import cs.ubc.ca.parser.Tokenizer;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +24,8 @@ public class DotProgram implements IProgram {
     private Node ast;
 
     private SymbolTable symbols;
+
+    final static Logger logger = Logger.getLogger(DotProgram.class);
 
     public DotProgram(String source) {
         this.source = source;
@@ -48,7 +51,11 @@ public class DotProgram implements IProgram {
 
     public ProgramOutput compile() {
         try {
-            this.parse();
+            ProgramOutput parseOutput = this.parse();
+            if (parseOutput.getStatus().equals(ProgramOutputStatus.ERROR)){
+                parseOutput.getErrors().stream().forEach(e -> logger.info(e.getMessage()));
+                return parseOutput;
+            }
             AstVisitor visitor = new AstVisitor(this.ast);
             MissingDeclarationListener missingDeclarationListener = new MissingDeclarationListener(this.symbols);
             RedeclarationListener redeclarationListener = new RedeclarationListener(this.symbols);
