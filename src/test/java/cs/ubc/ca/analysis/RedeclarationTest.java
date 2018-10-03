@@ -1,5 +1,8 @@
 package cs.ubc.ca.analysis;
 
+import com.google.common.collect.Iterables;
+import cs.ubc.ca.dsl.ProgramOutput;
+import cs.ubc.ca.dsl.ProgramOutputStatus;
 import cs.ubc.ca.errors.CompileError;
 import cs.ubc.ca.dsl.DotProgram;
 import org.junit.Before;
@@ -7,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
@@ -21,25 +25,32 @@ public class RedeclarationTest {
     public void setUp() {
     }
 
+    private void assertErrors(ProgramOutput output, String expectedMsg) {
+        RuntimeException error = Iterables.getFirst(output.getErrors(), null);
+        assertNotNull(error);
+        assertEquals(error.getMessage(), expectedMsg);
+    }
+
     @Test
     public void analyzeValidInput() {
         this.dotProgram = new DotProgram("valid/input.tdot");
-        this.dotProgram.compile();
+        ProgramOutput output = this.dotProgram.compile();
+        assertEquals(output.getStatus(), ProgramOutputStatus.SUCCESS);
     }
 
     @Test
     public void analyzeRedeclaringCircle() {
-        expectedEx.expect(CompileError.class);
-//        expectedEx.expectMessage("Unable to load source: input.tdot");
         this.dotProgram = new DotProgram("invalid/redeclaration.circle.tdot");
-        this.dotProgram.compile();
+        ProgramOutput output = this.dotProgram.compile();
+        assertEquals(output.getStatus(), ProgramOutputStatus.ERROR);
+        assertErrors(output, "Invalid declaration. Language already contains a shape declared as [Fido]");
     }
 
     @Test
     public void analyzeRedeclaringSquare() {
-        expectedEx.expect(CompileError.class);
-//        expectedEx.expectMessage("Unable to load source: input.tdot");
         this.dotProgram = new DotProgram("invalid/redeclaration.square.tdot");
-        this.dotProgram.compile();
+        ProgramOutput output = this.dotProgram.compile();
+        assertEquals(output.getStatus(), ProgramOutputStatus.ERROR);
+        assertErrors(output, "Invalid declaration. Language already contains a shape declared as [Bar]");
     }
 }

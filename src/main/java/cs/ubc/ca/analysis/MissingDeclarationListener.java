@@ -9,7 +9,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MissingDeclarationListener implements PropertyChangeListener {
+public class MissingDeclarationListener implements PropertyChangeListener, ICompalible {
 
     private final SymbolTable symbols;
 
@@ -37,5 +37,9 @@ public class MissingDeclarationListener implements PropertyChangeListener {
                 this.errors.add(error);
             }
         }
+    }
+
+    public List<CompileError> getErrors() {
+        return errors;
     }
 }

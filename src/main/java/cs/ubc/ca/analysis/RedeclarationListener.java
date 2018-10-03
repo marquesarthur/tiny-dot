@@ -9,7 +9,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RedeclarationListener implements PropertyChangeListener {
+public class RedeclarationListener implements PropertyChangeListener, ICompalible {
 
     private final SymbolTable symbols;
 
@@ -31,5 +31,9 @@ public class RedeclarationListener implements PropertyChangeListener {
                 this.errors.add(error);
             }
         }
+    }
+
+    public List<CompileError> getErrors() {
+        return errors;
     }
 }
