@@ -36,7 +36,7 @@ public class DotProgram {
         this.symbols = new SymbolTable();
 
         AstVisitor visitor = new AstVisitor(this.ast);
-        visitor.addObserver(this.symbols);
+        visitor.addListener(this.symbols);
         visitor.traverse();
     }
 
@@ -46,12 +46,20 @@ public class DotProgram {
         MissingDeclarationListener missingDeclarationListener = new MissingDeclarationListener(this.symbols);
         RedeclarationListener redeclarationListener = new RedeclarationListener(this.symbols);
 
-        visitor.addObserver(missingDeclarationListener);
-        visitor.addObserver(redeclarationListener);
+        visitor.addListener(missingDeclarationListener);
+        visitor.addListener(redeclarationListener);
         visitor.traverse();
 
         this.ast.setTarget(this.getTarget());
         this.ast.compile();
+    }
+
+    public Node getAst() {
+        return this.ast;
+    }
+
+    public SymbolTable getSymbols() {
+        return this.symbols;
     }
 
     public String getTarget() {
@@ -60,8 +68,8 @@ public class DotProgram {
             Path filepath = Paths.get(classLoader.getResource(this.source).toURI());
             String[] strings = filepath.toString().split("/");
             String out = "";
-            for (String partialPath: strings){
-                if ("".equals(partialPath)){
+            for (String partialPath : strings) {
+                if ("".equals(partialPath)) {
                     continue;
                 }
                 out += "/";
@@ -72,18 +80,9 @@ public class DotProgram {
             }
 
             String fileName = String.format("target_%s", strings[strings.length - 1]);
-            return String.format("%s/src/main/resources/build/%s", out, fileName);
+            return String.format("%s/src/main/resources/build/%s", out, fileName).replace(".tdot", ".dot");
         } catch (URISyntaxException | NullPointerException e) {
             throw new ParseException(String.format("Unable to find a source file that can be compiled to a target: %s", this.source), e);
         }
-    }
-
-
-    public Node getAst() {
-        return this.ast;
-    }
-
-    public SymbolTable getSymbols() {
-        return this.symbols;
     }
 }

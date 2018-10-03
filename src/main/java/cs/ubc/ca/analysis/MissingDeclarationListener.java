@@ -5,10 +5,12 @@ import cs.ubc.ca.parser.EdgeNode;
 import cs.ubc.ca.parser.ShapeNode;
 import cs.ubc.ca.parser.SymbolTable;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MissingDeclarationListener implements Observer {
+public class MissingDeclarationListener implements PropertyChangeListener {
 
     private final SymbolTable symbols;
 
@@ -17,9 +19,9 @@ public class MissingDeclarationListener implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        if (arg instanceof EdgeNode) {
-            EdgeNode edgeNode = (EdgeNode) arg;
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getNewValue() instanceof EdgeNode) {
+            EdgeNode edgeNode = (EdgeNode) evt.getNewValue();
 
             String from = edgeNode.getEdge().getA();
             String to = edgeNode.getEdge().getB();

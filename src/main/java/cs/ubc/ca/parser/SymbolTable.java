@@ -1,8 +1,11 @@
 package cs.ubc.ca.parser;
 
-import java.util.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SymbolTable implements Observer {
+public class SymbolTable implements PropertyChangeListener {
 
     private Map<String, Node> table;
 
@@ -26,10 +29,11 @@ public class SymbolTable implements Observer {
         this.table.put(name, node);
     }
 
+
     @Override
-    public void update(Observable o, Object arg) {
-        if (arg instanceof ShapeNode) {
-            ShapeNode shapeNode = (ShapeNode) arg;
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getNewValue() instanceof ShapeNode) {
+            ShapeNode shapeNode = (ShapeNode) evt.getNewValue();
             this.insert(shapeNode.getShape().getName(), shapeNode);
         }
     }

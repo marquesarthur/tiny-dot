@@ -1,20 +1,22 @@
 package cs.ubc.ca.ast;
 
-import cs.ubc.ca.parser.EdgeNode;
 import cs.ubc.ca.parser.Node;
-import cs.ubc.ca.parser.ShapeNode;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Observable;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 
-public class AstVisitor extends Observable {
+public class AstVisitor {
 
     private final Node root;
 
+    private PropertyChangeSupport support;
+
+    private Node lastVisited;
+
     public AstVisitor(Node node) {
         super();
+        this.support = new PropertyChangeSupport(this);
         this.root = node;
     }
 
@@ -23,8 +25,10 @@ public class AstVisitor extends Observable {
     }
 
     public void visit(Node node) {
-        setChanged();
-        notifyObservers(node);
+        // fires to the listener the node, it's old value and the new value, as we don't keep track of the old value, the second parameter is pointless
+        // however, the api requires that old value != new value. Hence, I added this last visited attribute
+        this.support.firePropertyChange("node", this.lastVisited, node);
+        this.lastVisited = node;
         this.visitChildren(node);
     }
 
@@ -32,6 +36,10 @@ public class AstVisitor extends Observable {
         for (Node child : node.getChildren()) {
             this.visit(child);
         }
+    }
+
+    public void addListener(PropertyChangeListener listener) {
+        this.support.addPropertyChangeListener("node", listener);
     }
 
 
