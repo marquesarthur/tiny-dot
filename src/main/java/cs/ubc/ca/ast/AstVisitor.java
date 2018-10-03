@@ -5,7 +5,7 @@ import cs.ubc.ca.parser.Node;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-
+// see: https://www.baeldung.com/java-observer-pattern
 public class AstVisitor {
 
     private final Node root;
@@ -25,7 +25,7 @@ public class AstVisitor {
     }
 
     public void visit(Node node) {
-        // fires to the listener the node, it's old value and the new value, as we don't keep track of the old value, the second parameter is pointless
+        // fires to the listener: the event, it's old value and the new value, as we don't keep track of the old value, the second parameter is pointless
         // however, the api requires that old value != new value. Hence, I added this last visited attribute
         this.support.firePropertyChange("node", this.lastVisited, node);
         this.lastVisited = node;
@@ -41,6 +41,4 @@ public class AstVisitor {
     public void addListener(PropertyChangeListener listener) {
         this.support.addPropertyChangeListener("node", listener);
     }
-
-
 }

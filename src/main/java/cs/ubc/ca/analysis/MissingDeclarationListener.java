@@ -1,21 +1,23 @@
 package cs.ubc.ca.analysis;
 
-import cs.ubc.ca.errors.CompileException;
+import cs.ubc.ca.errors.CompileError;
 import cs.ubc.ca.parser.EdgeNode;
-import cs.ubc.ca.parser.ShapeNode;
 import cs.ubc.ca.parser.SymbolTable;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MissingDeclarationListener implements PropertyChangeListener {
 
     private final SymbolTable symbols;
 
+    private List<CompileError> errors;
+
     public MissingDeclarationListener(SymbolTable symbols) {
         this.symbols = symbols;
+        this.errors = new ArrayList<>();
     }
 
     @Override
@@ -26,11 +28,13 @@ public class MissingDeclarationListener implements PropertyChangeListener {
             String from = edgeNode.getEdge().getA();
             String to = edgeNode.getEdge().getB();
             if (!this.symbols.contains(from)) {
-                throw new CompileException(String.format("Invalid edge. Language does not contain a shape declared as [%s]", from));
+                CompileError error = new CompileError(String.format("Invalid edge. Language does not contain a shape declared as [%s]", from));
+                this.errors.add(error);
             }
 
             if (!this.symbols.contains(to)) {
-                throw new CompileException(String.format("Invalid edge. Language does not contain a shape declared as [%s]", to));
+                CompileError error = new CompileError(String.format("Invalid edge. Language does not contain a shape declared as [%s]", to));
+                this.errors.add(error);
             }
         }
     }

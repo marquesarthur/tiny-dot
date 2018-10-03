@@ -1,25 +1,24 @@
 package cs.ubc.ca.analysis;
 
-import cs.ubc.ca.errors.CompileException;
-import cs.ubc.ca.errors.ParseException;
-import cs.ubc.ca.parser.EdgeNode;
+import cs.ubc.ca.errors.CompileError;
 import cs.ubc.ca.parser.ShapeNode;
 import cs.ubc.ca.parser.SymbolTable;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RedeclarationListener implements PropertyChangeListener {
 
     private final SymbolTable symbols;
 
+    private List<CompileError> errors;
+
     public RedeclarationListener(SymbolTable symbols) {
         this.symbols = symbols;
+        this.errors = new ArrayList<>();
     }
-
-
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -28,7 +27,8 @@ public class RedeclarationListener implements PropertyChangeListener {
             String name = shapeNode.getShape().getName();
 
             if (this.symbols.contains(name) && !this.symbols.get(name).equals(shapeNode)) {
-                throw new CompileException(String.format("Invalid declaration. Language already contains a shape declared as [%s]", name));
+                CompileError error = new CompileError(String.format("Invalid declaration. Language already contains a shape declared as [%s]", name));
+                this.errors.add(error);
             }
         }
     }

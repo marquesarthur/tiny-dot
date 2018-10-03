@@ -1,6 +1,6 @@
 package cs.ubc.ca.analysis;
 
-import cs.ubc.ca.errors.CompileException;
+import cs.ubc.ca.errors.CompileError;
 import cs.ubc.ca.dsl.DotProgram;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,7 +29,7 @@ public class MissingDeclarationTest {
 
     @Test
     public void analyzeMissingCircle() {
-        expectedEx.expect(CompileException.class);
+        expectedEx.expect(CompileError.class);
 //        expectedEx.expectMessage("Unable to load source: input.tdot");
         this.dotProgram = new DotProgram("invalid/missing.circle.tdot");
         this.dotProgram.compile();
@@ -37,7 +37,7 @@ public class MissingDeclarationTest {
 
     @Test
     public void analyzeMissingSquare() {
-        expectedEx.expect(CompileException.class);
+        expectedEx.expect(CompileError.class);
 //        expectedEx.expectMessage("Unable to load source: input.tdot");
         this.dotProgram = new DotProgram("invalid/missing.square.tdot");
         this.dotProgram.compile();

@@ -1,6 +1,6 @@
 package cs.ubc.ca.analysis;
 
-import cs.ubc.ca.errors.CompileException;
+import cs.ubc.ca.errors.CompileError;
 import cs.ubc.ca.dsl.DotProgram;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,7 +29,7 @@ public class RedeclarationTest {
 
     @Test
     public void analyzeRedeclaringCircle() {
-        expectedEx.expect(CompileException.class);
+        expectedEx.expect(CompileError.class);
 //        expectedEx.expectMessage("Unable to load source: input.tdot");
         this.dotProgram = new DotProgram("invalid/redeclaration.circle.tdot");
         this.dotProgram.compile();
@@ -37,7 +37,7 @@ public class RedeclarationTest {
 
     @Test
     public void analyzeRedeclaringSquare() {
-        expectedEx.expect(CompileException.class);
+        expectedEx.expect(CompileError.class);
 //        expectedEx.expectMessage("Unable to load source: input.tdot");
         this.dotProgram = new DotProgram("invalid/redeclaration.square.tdot");
         this.dotProgram.compile();
