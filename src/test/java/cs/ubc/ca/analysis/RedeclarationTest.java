@@ -24,32 +24,32 @@ public class RedeclarationTest {
     public void setUp() {
     }
 
-    private void assertErrors(ProgramOutput output, String expectedMsg) {
+    private void assertErrors(String expectedMsg, ProgramOutput output) {
         RuntimeException error = Iterables.getFirst(output.getErrors(), null);
         assertNotNull(error);
-        assertEquals(error.getMessage(), expectedMsg);
+        assertEquals(expectedMsg, error.getMessage());
     }
 
     @Test
     public void analyzeValidInput() {
         this.dotProgram = new DotProgram("valid/sample.tdot");
         ProgramOutput output = this.dotProgram.compile();
-        assertEquals(output.getStatus(), ProgramOutputStatus.SUCCESS);
+        assertEquals(ProgramOutputStatus.SUCCESS, output.getStatus());
     }
 
     @Test
     public void analyzeRedeclaringCircle() {
         this.dotProgram = new DotProgram("invalid/redeclaration.circle.tdot");
         ProgramOutput output = this.dotProgram.compile();
-        assertEquals(output.getStatus(), ProgramOutputStatus.ERROR);
-        assertErrors(output, "Invalid declaration. Language already contains a shape declared as [Fido]");
+        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertErrors( "Invalid declaration. Language already contains a shape declared as [Fido]", output);
     }
 
     @Test
     public void analyzeRedeclaringSquare() {
         this.dotProgram = new DotProgram("invalid/redeclaration.square.tdot");
         ProgramOutput output = this.dotProgram.compile();
-        assertEquals(output.getStatus(), ProgramOutputStatus.ERROR);
-        assertErrors(output, "Invalid declaration. Language already contains a shape declared as [Bar]");
+        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertErrors( "Invalid declaration. Language already contains a shape declared as [Bar]", output);
     }
 }

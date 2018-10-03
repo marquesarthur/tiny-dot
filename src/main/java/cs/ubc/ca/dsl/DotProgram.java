@@ -45,6 +45,7 @@ public class DotProgram implements IProgram {
             visitor.traverse();
             return new ProgramOutput(ProgramOutputStatus.SUCCESS, this.ast, this.symbols, new ArrayList<>());
         } catch (ParseException e) {
+            logger.info(e.getMessage());
             return new ProgramOutput(ProgramOutputStatus.ERROR, this.ast, this.symbols, Collections.singletonList(e));
         }
     }

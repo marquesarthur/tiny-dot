@@ -1,7 +1,17 @@
-make a circle called Life please
-make a circle called Universe please
-make a square called Everything please
-make a square called Else please
-connect Life to Universe
-connect Everything to Else
-connect Life to Life
+digraph G {
+
+Life[shape=circle]
+
+Universe[shape=circle]
+
+Everything[shape=square]
+
+Else[shape=square]
+
+Life->Universe
+
+Everything->Else
+
+Life->Life
+
+}

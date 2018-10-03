@@ -27,7 +27,7 @@ public class DotProgramTest {
     public void setUp() {
     }
 
-    private void assertGeneratedOutputMatches(String outputPath, String expectedPath) {
+    private void assertGeneratedOutputMatches(String expectedPath, String outputPath) {
         try {
             ClassLoader classLoader = getClass().getClassLoader();
             Path filepath = Paths.get(classLoader.getResource(expectedPath).toURI());
@@ -42,25 +42,25 @@ public class DotProgramTest {
     private void assertCompilation(String source) {
         this.dotProgram = new DotProgram(source);
         ProgramOutput output = this.dotProgram.compile();
-        assertEquals(output.getStatus(), ProgramOutputStatus.SUCCESS);
+        assertEquals(ProgramOutputStatus.SUCCESS, output.getStatus());
     }
 
     @Test
     public void testSample() {
         assertCompilation("valid/sample.tdot");
-        assertGeneratedOutputMatches(this.dotProgram.getTarget(),"valid/output/sample.dot");
+        assertGeneratedOutputMatches("valid/output/sample.dot", this.dotProgram.getTarget());
     }
 
     @Test
     public void testFidoBiff() {
         assertCompilation("valid/FidoBiff.tdot");
-        assertGeneratedOutputMatches(this.dotProgram.getTarget(), "valid/output/FidoBiff.dot");
+        assertGeneratedOutputMatches("valid/output/FidoBiff.dot", this.dotProgram.getTarget());
     }
 
     @Test
     public void testFooBar() {
         assertCompilation("valid/FooBar.tdot");
-        assertGeneratedOutputMatches(this.dotProgram.getTarget(), "valid/output/FooBar.dot");
+        assertGeneratedOutputMatches("valid/output/FooBar.dot", this.dotProgram.getTarget());
     }
 
     @Test

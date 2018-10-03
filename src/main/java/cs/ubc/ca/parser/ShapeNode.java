@@ -22,14 +22,14 @@ public class ShapeNode extends Node {
 
     @Override
     public void parse(Tokenizer context) {
-
+        int currentLine = context.getLine();
         for (String exp : this.expression) {
             String token = context.pop();
             if (token == null) {
-                throw new ParseException(String.format("Invalid token. Parser was expecting: [%s] and received: [%s] instead", exp, token));
+                throw new ParseException(String.format("Invalid token at line %s.\nParser was expecting: [%s] and received: [%s] instead", currentLine, exp, token));
             }
             if (!token.matches(exp)) {
-                throw new ParseException(String.format("Invalid token. Parser was expecting: [%s] and received: [%s] instead", exp, token));
+                throw new ParseException(String.format("Invalid token at line %s.\nParser was expecting: [%s] and received: [%s] instead", currentLine, exp, token));
             }
             if (token.matches(Tokens.SHAPE)) {
                 this.shape.setGeoShape(token);
