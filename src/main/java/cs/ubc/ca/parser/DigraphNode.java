@@ -1,6 +1,7 @@
 package cs.ubc.ca.parser;
 
 
+import cs.ubc.ca.dsl.IProgram;
 import cs.ubc.ca.dsl.OutputWriter;
 import cs.ubc.ca.errors.ParseException;
 import cs.ubc.ca.errors.TransformationException;
@@ -9,6 +10,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +30,13 @@ import java.util.stream.Collectors;
  *
  * @author Arthur Marques
  */
-public class DigraphNode extends Node {
+public class DigraphNode  {
+
+    protected String target;
+
+    public List<ShapeNode> shapeChildren;
+
+    public List<EdgeNode> edgeChildren;
 
     public DigraphNode() {
         super();
@@ -39,19 +49,18 @@ public class DigraphNode extends Node {
      *
      * @param context
      */
-    @Override
     public void parse(Tokenizer context) {
-        List<Node> nodes = new ArrayList<>();
+        List<Object> nodes = new ArrayList<>();
 
         while (context.hasNext()) {
             String nextToken = context.top();
             switch (nextToken) {
-                case Tokens.MAKE:
+                case "make":
                     ShapeNode shapeNode = new ShapeNode();
                     shapeNode.parse(context);
                     nodes.add(shapeNode);
                     break;
-                case Tokens.CONNECT:
+                case "connect":
                     EdgeNode edgeNode = new EdgeNode();
                     edgeNode.parse(context);
                     nodes.add(edgeNode);
@@ -61,14 +70,24 @@ public class DigraphNode extends Node {
             }
         }
 
-        List<ShapeNode> shapes = nodes.stream().filter(n -> n instanceof ShapeNode).map(n -> (ShapeNode) n).collect(Collectors.toList());
-        List<EdgeNode> edges = nodes.stream().filter(n -> n instanceof EdgeNode).map(n -> (EdgeNode) n).collect(Collectors.toList());
 
-        this.children.addAll(shapes);
-        this.children.addAll(edges);
+        this.shapeChildren.addAll(nodes.stream().filter(n -> n instanceof ShapeNode).map(n -> (ShapeNode) n).collect(Collectors.toList()));
+        this.edgeChildren.addAll(nodes.stream().filter(n -> n instanceof EdgeNode).map(n -> (EdgeNode) n).collect(Collectors.toList()));
     }
 
-    @Override
+    public String getTarget() {
+        try {
+            URI resourcePathFile = System.class.getResource(this.target).toURI();
+            String resourcePath = Files.readAllLines(Paths.get(resourcePathFile)).get(0);
+            URI rootURI = new File("").toURI();
+            URI resourceURI = new File(resourcePath).toURI();
+            URI relativeResourceURI = rootURI.relativize(resourceURI);
+            return relativeResourceURI.getPath();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public void compile() {
         final String fileName = this.target;
         final String encoding = "UTF-8";
@@ -78,7 +97,12 @@ public class DigraphNode extends Node {
             File file = new File(fileName);
             PrintWriter writer = OutputWriter.getInstance(file, encoding).getWriter();
             writer.println(START);
-            children.forEach(Node::compile);
+            for (int i = 0; i < this.shapeChildren.size(); i++){
+                this.shapeChildren.get(i).compile();
+            }
+            for (int i = 0; i < this.edgeChildren.size(); i++){
+                this.edgeChildren.get(i).compile();
+            }
             writer.println(END);
             writer.close();
         } catch (FileNotFoundException e) {
@@ -88,12 +112,12 @@ public class DigraphNode extends Node {
         }
     }
 
-    public List<ShapeNode> getShapes() {
-        return this.children.stream().filter(n -> n instanceof ShapeNode).map(n -> (ShapeNode) n).collect(Collectors.toList());
+    public DigraphNode root() {
+        return this;
     }
 
-    public List<EdgeNode> getEdges() {
-        return this.children.stream().filter(n -> n instanceof EdgeNode).map(n -> (EdgeNode) n).collect(Collectors.toList());
+    public void setTarget(String target) {
+        this.target = target;
     }
 
 }

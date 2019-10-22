@@ -3,7 +3,6 @@ package cs.ubc.ca.parser;
 import com.google.common.collect.Iterables;
 import cs.ubc.ca.dsl.DotProgram;
 import cs.ubc.ca.dsl.ProgramOutput;
-import cs.ubc.ca.dsl.ProgramOutputStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,7 +33,7 @@ public class ParserTest {
     public void parseValidInput() {
         this.dotProgram = new DotProgram("valid/sample.tdot");
         ProgramOutput output = this.dotProgram.parse();
-        assertEquals(ProgramOutputStatus.SUCCESS, output.getStatus());
+        assertEquals(0, output.getStatus());
         assertNotNull(this.dotProgram.getAst());
     }
 
@@ -42,7 +41,7 @@ public class ParserTest {
     public void parseValidSimpleInput() {
         this.dotProgram = new DotProgram("valid/simple.tdot");
         ProgramOutput output = this.dotProgram.parse();
-        assertEquals(ProgramOutputStatus.SUCCESS, output.getStatus());
+        assertEquals(0, output.getStatus());
         assertNotNull(this.dotProgram.getAst());
     }
 
@@ -50,7 +49,7 @@ public class ParserTest {
     public void parseNonExistingInput() {
         this.dotProgram = new DotProgram("sample.tdot");
         ProgramOutput output = this.dotProgram.parse();
-        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertEquals(1, output.getStatus());
         assertErrors("Unable to load source: sample.tdot", output);
     }
 
@@ -58,7 +57,7 @@ public class ParserTest {
     public void parseInvalidShape() {
         this.dotProgram = new DotProgram("invalid/non.valid.shape.tdot");
         ProgramOutput output = this.dotProgram.parse();
-        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertEquals(1, output.getStatus());
         assertErrors("Invalid token at line 1.\nParser was expecting: [circle|square] and received: [universe] instead", output);
     }
 
@@ -66,7 +65,7 @@ public class ParserTest {
     public void parseIncompleteShapeMissingShape() {
         this.dotProgram = new DotProgram("invalid/incomplete.shape.missing.shape.tdot");
         ProgramOutput output = this.dotProgram.parse();
-        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertEquals(1, output.getStatus());
         assertErrors("Invalid token at line 2.\nParser was expecting: [circle|square] and received: [called] instead", output);
     }
 
@@ -75,7 +74,7 @@ public class ParserTest {
     public void parseIncompleteShapeMissingIdentifier() {
         this.dotProgram = new DotProgram("invalid/incomplete.shape.missing.identifier.tdot");
         ProgramOutput output = this.dotProgram.parse();
-        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertEquals(1, output.getStatus());
         assertErrors( "Invalid token at line 1.\nParser was expecting: [please] and received: [make] instead", output);
     }
 
@@ -83,7 +82,7 @@ public class ParserTest {
     public void parseIncompleteShapeMissingPlease() {
         this.dotProgram = new DotProgram("invalid/incomplete.shape.missing.please.tdot");
         ProgramOutput output = this.dotProgram.parse();
-        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertEquals(1, output.getStatus());
         assertErrors( "Invalid token at line 2.\nParser was expecting: [please] and received: [connect] instead", output);
     }
 }

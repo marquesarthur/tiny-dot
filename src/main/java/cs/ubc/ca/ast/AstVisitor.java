@@ -1,46 +1,52 @@
 package cs.ubc.ca.ast;
 
+import cs.ubc.ca.parser.DigraphNode;
+import cs.ubc.ca.parser.EdgeNode;
 import cs.ubc.ca.parser.Node;
+import cs.ubc.ca.parser.ShapeNode;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 // see: https://www.baeldung.com/java-observer-pattern
 public class AstVisitor {
 
-    private final Node root;
+    private final DigraphNode root;
 
-    private PropertyChangeSupport support;
 
-    private Node lastVisited;
+    private List<IListerner> listeners;
 
-    public AstVisitor(Node node) {
+    public AstVisitor(DigraphNode node) {
         super();
-        this.support = new PropertyChangeSupport(this);
         this.root = node;
     }
 
     public void traverse() {
-        this.visit(this.root);
+        this.visit();
     }
 
-    public void visit(Node node) {
-        // fires to the listener: the event, it's old value and the new value, as we don't keep track of the old value, the second parameter is pointless
-        // however, the api requires that old value != new value. Hence, I added this last visited attribute
-        this.support.firePropertyChange("node", this.lastVisited, node);
-        this.lastVisited = node;
-        this.visitChildren(node);
+    public void addListener(IListerner lst){
+        if (this.listeners == null){
+            this.listeners = new ArrayList<>();
+        }
+        this.listeners.add(lst);
+
     }
 
-    private void visitChildren(Node node) {
-        if (node.getChildren() != null) {
-            for (Node child : node.getChildren()) {
-                this.visit(child);
+    public void visit() {
+        for (IListerner lst: this.listeners) {
+            for (ShapeNode s: this.root.shapeChildren){
+                lst.visit(s);
+            }
+
+            for (EdgeNode s: this.root.edgeChildren){
+                lst.visit(s);
             }
         }
+
     }
 
-    public void addListener(PropertyChangeListener listener) {
-        this.support.addPropertyChangeListener("node", listener);
-    }
+
 }

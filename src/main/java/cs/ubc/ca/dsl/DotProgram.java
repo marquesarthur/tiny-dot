@@ -20,7 +20,7 @@ public class DotProgram implements IProgram {
 
     private final String source;
 
-    private Node ast;
+    private DigraphNode ast;
 
     private SymbolTable symbols;
 
@@ -33,7 +33,7 @@ public class DotProgram implements IProgram {
     public ProgramOutput parse() {
         try {
             Tokenizer ctx = new Tokenizer(source);
-            Node parser = new DigraphNode();
+            DigraphNode parser = new DigraphNode();
             parser.parse(ctx);
             this.ast = parser.root(); //similar until here
 
@@ -42,44 +42,44 @@ public class DotProgram implements IProgram {
             AstVisitor visitor = new AstVisitor(this.ast);
             visitor.addListener(this.symbols);
             visitor.traverse();
-            return new ProgramOutput(ProgramOutputStatus.SUCCESS, this.ast, this.symbols, new ArrayList<>());
+            return new ProgramOutput(0, this.ast, this.symbols, new ArrayList<>());
         } catch (ParseException e) {
             logger.info(e.getMessage());
-            return new ProgramOutput(ProgramOutputStatus.ERROR, this.ast, this.symbols, Collections.singletonList(e));
+            return new ProgramOutput(1, this.ast, this.symbols, Collections.singletonList(e));
         }
     }
 
     public ProgramOutput compile() {
         try {
             ProgramOutput parseOutput = this.parse();
-            if (parseOutput.getStatus().equals(ProgramOutputStatus.ERROR)){
+            if (parseOutput.getStatus() == 0){
                 parseOutput.getErrors().stream().forEach(e -> logger.info(e.getMessage()));
                 return parseOutput;
             }
             AstVisitor visitor = new AstVisitor(this.ast);
-            MissingDeclarationListener missingDeclarationListener = new MissingDeclarationListener(this.symbols);
-            RedeclarationListener redeclarationListener = new RedeclarationListener(this.symbols);
-
-            visitor.addListener(missingDeclarationListener);
-            visitor.addListener(redeclarationListener);
+//            MissingDeclarationListener missingDeclarationListener = new MissingDeclarationListener(this.symbols);
+//            RedeclarationListener redeclarationListener = new RedeclarationListener(this.symbols);
+//
+//            visitor.addListener(missingDeclarationListener);
+//            visitor.addListener(redeclarationListener);
 
             visitor.traverse();
 
             this.ast.setTarget(this.getTarget());
             this.ast.compile();
 
-            ProgramOutput output = new ProgramOutput(ProgramOutputStatus.SUCCESS, this.ast, this.symbols, new ArrayList<>());
-            this.checkCompileErrors(output, missingDeclarationListener);
-            this.checkCompileErrors(output, redeclarationListener);
+            ProgramOutput output = new ProgramOutput(0, this.ast, this.symbols, new ArrayList<>());
+//            this.checkCompileErrors(output, missingDeclarationListener);
+//            this.checkCompileErrors(output, redeclarationListener);
 
             return output;
 
         } catch (TransformationException | ParseException e) {
-            return new ProgramOutput(ProgramOutputStatus.ERROR, this.ast, this.symbols, Collections.singletonList(e));
+            return new ProgramOutput(1, this.ast, this.symbols, Collections.singletonList(e));
         }
     }
 
-    public Node getAst() {
+    public DigraphNode getAst() {
         return this.ast;
     }
 
@@ -93,7 +93,7 @@ public class DotProgram implements IProgram {
 
     private void checkCompileErrors(ProgramOutput output, ICompalible compilationAnalysis) {
         if (!compilationAnalysis.getErrors().isEmpty()) {
-            output.setStatus(ProgramOutputStatus.ERROR);
+            output.setStatus(1);
             output.getErrors().addAll(compilationAnalysis.getErrors());
         }
     }

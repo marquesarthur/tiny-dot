@@ -1,5 +1,6 @@
 package cs.ubc.ca.dsl;
 
+import cs.ubc.ca.parser.DigraphNode;
 import cs.ubc.ca.parser.Node;
 import cs.ubc.ca.parser.SymbolTable;
 
@@ -7,27 +8,27 @@ import java.util.List;
 
 public class ProgramOutput {
 
-    private ProgramOutputStatus status;
+    private int status;
 
     private SymbolTable symbolTable;
 
-    private Node ast;
+    private DigraphNode ast;
 
     private List<RuntimeException> errors;
 
 
-    public ProgramOutput(ProgramOutputStatus status, Node ast, SymbolTable symbolTable, List<RuntimeException> errors) {
+    public ProgramOutput(int status, DigraphNode ast, SymbolTable symbolTable, List<RuntimeException> errors) {
         this.status = status;
         this.ast = ast;
         this.symbolTable = symbolTable;
         this.errors = errors;
     }
 
-    public ProgramOutputStatus getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(ProgramOutputStatus status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -39,11 +40,11 @@ public class ProgramOutput {
         this.symbolTable = symbolTable;
     }
 
-    public Node getAst() {
+    public DigraphNode getAst() {
         return ast;
     }
 
-    public void setAst(Node ast) {
+    public void setAst(DigraphNode ast) {
         this.ast = ast;
     }
 

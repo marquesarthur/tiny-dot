@@ -42,12 +42,12 @@ public class DotProgramTest {
     private void assertCompilation(String source) {
         this.dotProgram = new DotProgram(source);
         ProgramOutput output = this.dotProgram.compile();
-        if (ProgramOutputStatus.ERROR == output.getStatus()) {
+        if (1 == output.getStatus()) {
             for (RuntimeException err: output.getErrors()) {
                 System.out.println(err.getMessage());
             }
         }
-        assertEquals(ProgramOutputStatus.SUCCESS, output.getStatus());
+        assertEquals(0, output.getStatus());
         OutputWriter.tearDown();
     }
 

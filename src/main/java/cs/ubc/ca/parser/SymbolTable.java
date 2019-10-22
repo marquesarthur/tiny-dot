@@ -1,20 +1,15 @@
 package cs.ubc.ca.parser;
 
+import cs.ubc.ca.ast.IListerner;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Symbol table that contains all the identifiers declared as a shape in the DSL.
- * Class implements the property change listener design pattern.
- *
- * At traversing time, whenever the current node changes, the {@link SymbolTable#propertyChange}
- * will fire and the node being visited will be added to the symbol table (in case it is a shape node).
- */
-public class SymbolTable implements PropertyChangeListener {
+public class SymbolTable implements IListerner {
 
-    private Map<String, Node> table;
+    private Map<String, ShapeNode> table;
 
     public SymbolTable() {
         this.table = new HashMap<>();
@@ -28,19 +23,18 @@ public class SymbolTable implements PropertyChangeListener {
         return this.table.containsKey(name);
     }
 
-    public Node get(String name) {
+    public ShapeNode get(String name) {
         return this.table.get(name);
     }
 
-    public void insert(String name, Node node) {
+    public void insert(String name, ShapeNode node) {
         this.table.put(name, node);
     }
 
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getNewValue() instanceof ShapeNode) {
-            ShapeNode shapeNode = (ShapeNode) evt.getNewValue();
+    public void visit(Object evt) {
+        if (evt instanceof ShapeNode) {
+            ShapeNode shapeNode = (ShapeNode) evt;
             this.insert(shapeNode.getShape().getName(), shapeNode);
         }
     }

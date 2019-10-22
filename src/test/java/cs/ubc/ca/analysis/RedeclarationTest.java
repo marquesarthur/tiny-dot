@@ -3,7 +3,6 @@ package cs.ubc.ca.analysis;
 import com.google.common.collect.Iterables;
 import cs.ubc.ca.dsl.DotProgram;
 import cs.ubc.ca.dsl.ProgramOutput;
-import cs.ubc.ca.dsl.ProgramOutputStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,14 +33,14 @@ public class RedeclarationTest {
     public void analyzeValidInput() {
         this.dotProgram = new DotProgram("valid/sample.tdot");
         ProgramOutput output = this.dotProgram.compile();
-        assertEquals(ProgramOutputStatus.SUCCESS, output.getStatus());
+        assertEquals(0, output.getStatus());
     }
 
     @Test
     public void analyzeRedeclaringCircle() {
         this.dotProgram = new DotProgram("invalid/redeclaration.circle.tdot");
         ProgramOutput output = this.dotProgram.compile();
-        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertEquals(1, output.getStatus());
         assertErrors( "Invalid declaration. Language already contains a shape declared as [Fido]", output);
     }
 
@@ -49,7 +48,7 @@ public class RedeclarationTest {
     public void analyzeRedeclaringSquare() {
         this.dotProgram = new DotProgram("invalid/redeclaration.square.tdot");
         ProgramOutput output = this.dotProgram.compile();
-        assertEquals(ProgramOutputStatus.ERROR, output.getStatus());
+        assertEquals(1, output.getStatus());
         assertErrors( "Invalid declaration. Language already contains a shape declared as [Bar]", output);
     }
 }
