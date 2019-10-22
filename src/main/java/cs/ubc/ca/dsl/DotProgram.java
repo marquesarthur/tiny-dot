@@ -1,5 +1,6 @@
 package cs.ubc.ca.dsl;
 
+import cs.ubc.ca.analysis.CircularListener;
 import cs.ubc.ca.analysis.ICompalible;
 import cs.ubc.ca.analysis.MissingDeclarationListener;
 import cs.ubc.ca.analysis.RedeclarationListener;
@@ -19,8 +20,6 @@ public class DotProgram implements IProgram {
 
     private final String source;
 
-    private Node parser;
-
     private Node ast;
 
     private SymbolTable symbols;
@@ -34,9 +33,9 @@ public class DotProgram implements IProgram {
     public ProgramOutput parse() {
         try {
             Tokenizer ctx = new Tokenizer(source);
-            this.parser = new DigraphNode();
-            this.parser.parse(ctx);
-            this.ast = this.parser.root();
+            Node parser = new DigraphNode();
+            parser.parse(ctx);
+            this.ast = parser.root(); //similar until here
 
             this.symbols = new SymbolTable();
 
@@ -63,6 +62,7 @@ public class DotProgram implements IProgram {
 
             visitor.addListener(missingDeclarationListener);
             visitor.addListener(redeclarationListener);
+
             visitor.traverse();
 
             this.ast.setTarget(this.getTarget());

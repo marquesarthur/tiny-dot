@@ -4,7 +4,6 @@ import cs.ubc.ca.parser.Node;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Collections;
 
 // see: https://www.baeldung.com/java-observer-pattern
 public class AstVisitor {

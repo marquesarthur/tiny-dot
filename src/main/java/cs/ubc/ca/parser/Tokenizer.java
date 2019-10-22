@@ -2,7 +2,6 @@ package cs.ubc.ca.parser;
 
 import cs.ubc.ca.errors.ParseException;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -15,9 +14,15 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Tokenizer class. Tokenizes an input file, in case the file exists.
+ * The tokenizer acts as a FIFO data structure where tokens are served in the order that they were processed.
+ *
+ * @author Arthur Marques
+ */
 public class Tokenizer {
 
-    private static String program;
+    private String program;
 
     private String[] tokens;
 
@@ -46,8 +51,13 @@ public class Tokenizer {
         this.column = 0;
     }
 
-    // https://stackoverflow.com/questions/4042434/converting-arrayliststring-to-string-in-java
-    private String[] preProcessInput(){
+    /**
+     * pre process input string removing empty lines.
+     * for a more robust dsl, you could also add pre-processing of comments
+     *
+     * @return
+     */
+    private String[] preProcessInput() {
         String[] result = this.program.replace(System.lineSeparator(), String.format(" %s ", System.lineSeparator())).split(" ");
         Predicate<String> isEmpty = String::isEmpty;
         Predicate<String> notEmpty = isEmpty.negate();
@@ -56,8 +66,14 @@ public class Tokenizer {
         return filtered.toArray(new String[0]);
     }
 
+    /**
+     * Returns the top token in the queue. Does not remove the token from the queue.
+     *
+     * @return string first token in the queue.
+     */
     public String top() {
         if (currentToken < tokens.length) {
+            // ignore blank lines
             while (System.lineSeparator().equals(tokens[currentToken])) {
                 currentToken++;
                 this.line++;
@@ -70,6 +86,11 @@ public class Tokenizer {
         return null;
     }
 
+    /**
+     * Returns the top token in the queue. Removes the token from the queue.
+     *
+     * @return string first token in the queue.
+     */
     public String pop() {
         if (this.top() != null) {
             String token = tokens[currentToken];
@@ -80,15 +101,26 @@ public class Tokenizer {
         return null;
     }
 
+    /**
+     * Checks whether there are more tokens for processing
+     *
+     * @return
+     */
     public boolean hasNext() {
         return this.top() != null;
     }
 
+    /**
+     * Returns the current line in the input file based on the tokens that have been processed.
+     * Useful for debugging and generating user friendly parsing errors.
+     *
+     * @return int of current line in the tokenizer
+     */
     public int getLine() {
         return this.line;
     }
 
-    public int getColumn(){
+    public int getColumn() {
         return this.column;
     }
 }

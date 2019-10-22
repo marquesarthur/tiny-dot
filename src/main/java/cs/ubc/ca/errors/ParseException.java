@@ -1,7 +1,5 @@
 package cs.ubc.ca.errors;
 
-import java.io.IOException;
-
 public class ParseException extends RuntimeException {
 
     public ParseException(String msg) {

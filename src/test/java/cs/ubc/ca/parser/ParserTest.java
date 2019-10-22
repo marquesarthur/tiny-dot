@@ -39,6 +39,14 @@ public class ParserTest {
     }
 
     @Test
+    public void parseValidSimpleInput() {
+        this.dotProgram = new DotProgram("valid/simple.tdot");
+        ProgramOutput output = this.dotProgram.parse();
+        assertEquals(ProgramOutputStatus.SUCCESS, output.getStatus());
+        assertNotNull(this.dotProgram.getAst());
+    }
+
+    @Test
     public void parseNonExistingInput() {
         this.dotProgram = new DotProgram("sample.tdot");
         ProgramOutput output = this.dotProgram.parse();

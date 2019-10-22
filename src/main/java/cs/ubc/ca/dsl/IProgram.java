@@ -19,20 +19,20 @@ public interface IProgram {
             ClassLoader classLoader = getClass().getClassLoader();
             Path filepath = Paths.get(classLoader.getResource(this.getSource()).toURI());
             String[] strings = filepath.toString().split("/");
-            String out = "";
+            StringBuilder out = new StringBuilder();
             for (String partialPath : strings) {
                 if ("".equals(partialPath)) {
                     continue;
                 }
-                out += "/";
-                out += partialPath;
+                out.append("/");
+                out.append(partialPath);
                 if (partialPath.equals("tiny-dot")) {
                     break;
                 }
             }
 
             String fileName = String.format("target_%s", strings[strings.length - 1]);
-            return String.format("%s/src/main/resources/build/%s", out, fileName).replace(".tdot", ".dot");
+            return String.format("%s/src/main/resources/build/%s", out.toString(), fileName).replace(".tdot", ".dot");
         } catch (URISyntaxException | NullPointerException e) {
             throw new ParseException(String.format("Unable to find a source file that can be compiled to a target: %s", this.getSource()), e);
         }

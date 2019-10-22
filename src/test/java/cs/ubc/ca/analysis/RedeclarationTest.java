@@ -1,9 +1,9 @@
 package cs.ubc.ca.analysis;
 
 import com.google.common.collect.Iterables;
+import cs.ubc.ca.dsl.DotProgram;
 import cs.ubc.ca.dsl.ProgramOutput;
 import cs.ubc.ca.dsl.ProgramOutputStatus;
-import cs.ubc.ca.dsl.DotProgram;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

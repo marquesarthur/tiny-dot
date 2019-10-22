@@ -2,8 +2,8 @@ digraph G {
 
 Fido[shape=circle]
 
-Biff[shape=square]
+Fido[shape=circle]
 
-Fido->Biff
+Fido->Fido
 
 }

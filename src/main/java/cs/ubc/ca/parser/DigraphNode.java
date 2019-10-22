@@ -1,24 +1,44 @@
 package cs.ubc.ca.parser;
 
 
+import cs.ubc.ca.dsl.OutputWriter;
 import cs.ubc.ca.errors.ParseException;
 import cs.ubc.ca.errors.TransformationException;
 
-import java.io.*;
-import java.net.URISyntaxException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * <pre>
+ * Class that represents a DigraphNode in the AST representation of the DSL.
+ * A DigraphNode is the root node in the DSL and it match the expression:
+ *
+ *      digraph_node ::= (edge_node|shape_node)*
+ *      edge_node ::= {@link EdgeNode}
+ *      shape_node ::= {@link ShapeNode}
+ *
+ * </pre>
+ *
+ * @author Arthur Marques
+ */
 public class DigraphNode extends Node {
-
-    private static final String START = "digraph G {" + System.lineSeparator();
-    private static final String END = "}";
 
     public DigraphNode() {
         super();
     }
 
+    /**
+     * Parses the content of a tokenizer generating the current node.
+     * Any line that matches a shape_node will add a {@link ShapeNode} child to the AST.
+     * Any line that matches a edge_node will add a {@link EdgeNode} child to the AST.
+     *
+     * @param context
+     */
     @Override
     public void parse(Tokenizer context) {
         List<Node> nodes = new ArrayList<>();
@@ -52,10 +72,11 @@ public class DigraphNode extends Node {
     public void compile() {
         final String fileName = this.target;
         final String encoding = "UTF-8";
+        final String START = "digraph G {" + System.lineSeparator();
+        final String END = "}";
         try {
             File file = new File(fileName);
-
-            writer = new PrintWriter(file, encoding);
+            PrintWriter writer = OutputWriter.getInstance(file, encoding).getWriter();
             writer.println(START);
             children.forEach(Node::compile);
             writer.println(END);

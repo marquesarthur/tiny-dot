@@ -5,6 +5,13 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Symbol table that contains all the identifiers declared as a shape in the DSL.
+ * Class implements the property change listener design pattern.
+ *
+ * At traversing time, whenever the current node changes, the {@link SymbolTable#propertyChange}
+ * will fire and the node being visited will be added to the symbol table (in case it is a shape node).
+ */
 public class SymbolTable implements PropertyChangeListener {
 
     private Map<String, Node> table;

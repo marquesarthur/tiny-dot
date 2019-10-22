@@ -1,6 +1,10 @@
 # Compiled class file
 *.class
 
+tiny-dot/.classpath
+tiny-dot/.project
+tiny-dot/.settings/
+
 # Log file
 *.log
 
@@ -24,7 +28,54 @@ hs_err_pid*
 
 .idea/
 target/
-
-src/main/resources/build/
-!src/main/resources/build/.gitkeep
+**/resources/build/.dot
 *.iml
+**/.DS_Store
+.DS_Store
+*.iml
+
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+**/src/**/*.map
+**/test/*.js
+**/test/*.map
+**/src/*.js
+**/src/*.map
+**/src/**/*.js
+**/npm-debug.log
+**/test/**/*.js
+**/test/**/*.map
+.DS_Store
+.hg/
+.hgignore
+mochawesome-reports/
+**/mochawesome-report/
+**/.idea/
+.idea/
+
+
+.idea/
+target/
+
+
+**/resources/build/.dot
+*.iml
+**/.DS_Store
+.DS_Store

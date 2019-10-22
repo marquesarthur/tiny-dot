@@ -4,6 +4,6 @@ Fido[shape=circle]
 
 Biff[shape=square]
 
-Fido->Biff
+Foo->Biff
 
 }
