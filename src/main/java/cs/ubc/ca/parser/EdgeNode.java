@@ -33,36 +33,17 @@ public class EdgeNode extends Node {
         this.edge = new Edge();
     }
 
-    /**
-     * Parses the content of a tokenizer generating the current edge node.
-     * Edge node has no children.
-     *
-     * @param context
-     */
     @Override
     public void parse(Tokenizer context) {
-        int currentLine = context.getLine();
-        for (String exp: this.expression){
-            String token = context.pop();
-            if (token == null) {
-                throw new ParseException(String.format("Invalid token at line %s.%nParser was expecting: [%s] and received: [%s] instead", currentLine, exp, token));
-            }
-            if (!token.matches(exp)){ //checking
-                throw new ParseException(String.format("Invalid token at line %s.%nParser was expecting: [%s] and received: [%s] instead", currentLine, exp, token));
-            }
-            if (exp.equals(Tokens.IDENTIFIER) && token.matches(Tokens.IDENTIFIER)) {
-                this.edge.connect(token);
-            }
-        }
-    }
-
-    public Edge getEdge() {
-        return this.edge;
+        // TODO: method stub
     }
 
     @Override
     public void compile() {
-        PrintWriter writer = OutputWriter.getInstance().getWriter();
-        writer.println(edge.toDigraph());
+        // TODO: method stub
+    }
+
+    public Edge getEdge() {
+        return this.edge;
     }
 }

@@ -70,7 +70,6 @@ public class ParserTest {
         assertErrors("Invalid token at line 2.\nParser was expecting: [circle|square] and received: [called] instead", output);
     }
 
-    // FIXME: this one is a little tricky because please matches the regex of an identifier. Ideally, I should have a rule that an identifier can't match any of the symbols in my language. As a lazy person, I will leave that to the students.
     @Test
     public void parseIncompleteShapeMissingIdentifier() {
         this.dotProgram = new DotProgram("invalid/incomplete.shape.missing.identifier.tdot");
