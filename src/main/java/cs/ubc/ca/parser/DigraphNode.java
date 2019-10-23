@@ -2,7 +2,6 @@ package cs.ubc.ca.parser;
 
 
 import cs.ubc.ca.dsl.OutputWriter;
-import cs.ubc.ca.errors.ParseException;
 import cs.ubc.ca.errors.TransformationException;
 
 import java.io.File;
@@ -45,20 +44,10 @@ public class DigraphNode extends Node {
 
         while (context.hasNext()) {
             String nextToken = context.top();
-            switch (nextToken) {
-                case Tokens.MAKE:
-                    ShapeNode shapeNode = new ShapeNode();
-                    shapeNode.parse(context);
-                    nodes.add(shapeNode);
-                    break;
-                case Tokens.CONNECT:
-                    EdgeNode edgeNode = new EdgeNode();
-                    edgeNode.parse(context);
-                    nodes.add(edgeNode);
-                    break;
-                default:
-                    throw new ParseException("Unrecognizable token: " + nextToken);
-            }
+            Node node = NodeFactory.getParser(nextToken);
+            node.parse(context);
+            nodes.add(node);
+
         }
 
         List<ShapeNode> shapes = nodes.stream().filter(n -> n instanceof ShapeNode).map(n -> (ShapeNode) n).collect(Collectors.toList());
