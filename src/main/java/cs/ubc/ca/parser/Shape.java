@@ -1,4 +1,4 @@
-package cs.ubc.ca.ast;
+package cs.ubc.ca.parser;
 
 public class Shape {
 

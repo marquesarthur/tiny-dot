@@ -1,7 +1,6 @@
 package cs.ubc.ca.parser;
 
 
-import cs.ubc.ca.ast.Edge;
 import cs.ubc.ca.dsl.OutputWriter;
 import cs.ubc.ca.errors.ParseException;
 

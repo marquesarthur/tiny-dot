@@ -1,10 +1,9 @@
 package cs.ubc.ca.dsl;
 
-import cs.ubc.ca.analysis.CircularListener;
 import cs.ubc.ca.analysis.ICompalible;
 import cs.ubc.ca.analysis.MissingDeclarationListener;
 import cs.ubc.ca.analysis.RedeclarationListener;
-import cs.ubc.ca.ast.AstVisitor;
+import cs.ubc.ca.analysis.AstVisitor;
 import cs.ubc.ca.errors.ParseException;
 import cs.ubc.ca.errors.TransformationException;
 import cs.ubc.ca.parser.DigraphNode;
