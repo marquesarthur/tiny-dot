@@ -34,9 +34,9 @@ public class DigraphNode  {
 
     protected String target;
 
-    public List<ShapeNode> shapeChildren;
+    public List<ShapeNode> shapeChildren = new ArrayList<>();
 
-    public List<EdgeNode> edgeChildren;
+    public List<EdgeNode> edgeChildren = new ArrayList<>();
 
     public DigraphNode() {
         super();

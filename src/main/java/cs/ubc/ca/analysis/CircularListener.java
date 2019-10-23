@@ -1,5 +1,6 @@
 package cs.ubc.ca.analysis;
 
+import cs.ubc.ca.ast.IListerner;
 import cs.ubc.ca.errors.CompileError;
 import cs.ubc.ca.parser.EdgeNode;
 import cs.ubc.ca.parser.SymbolTable;
@@ -9,7 +10,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CircularListener implements PropertyChangeListener, ICompalible {
+public class CircularListener implements IListerner, ICompalible {
 
     private final SymbolTable symbols;
 
@@ -21,9 +22,9 @@ public class CircularListener implements PropertyChangeListener, ICompalible {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getNewValue() instanceof EdgeNode) {
-            EdgeNode edgeNode = (EdgeNode) evt.getNewValue();
+    public void visit(Object evt) {
+        if (evt instanceof EdgeNode) {
+            EdgeNode edgeNode = (EdgeNode) evt;
 
             String from = edgeNode.getEdge().getA();
             String to = edgeNode.getEdge().getB();

@@ -26,10 +26,10 @@ public class SymbolTableTest {
         this.dotProgram = new DotProgram("valid/sample.tdot");
         this.dotProgram.parse();
         assertNotNull(this.dotProgram.getSymbols());
-        assertEquals(2, this.dotProgram.getSymbols().size());
-        assertTrue(this.dotProgram.getSymbols().contains("Fido"));
-        assertTrue(this.dotProgram.getSymbols().contains("Biff"));
-        assertThat(this.dotProgram.getSymbols().get("Fido"), instanceOf(ShapeNode.class));
-        assertThat(this.dotProgram.getSymbols().get("Biff"), instanceOf(ShapeNode.class));
+        assertEquals(2, SymbolTable.size());
+        assertTrue(SymbolTable.contains("Fido"));
+        assertTrue(SymbolTable.contains("Biff"));
+        assertThat(SymbolTable.get("Fido"), instanceOf(ShapeNode.class));
+        assertThat(SymbolTable.get("Biff"), instanceOf(ShapeNode.class));
     }
 }

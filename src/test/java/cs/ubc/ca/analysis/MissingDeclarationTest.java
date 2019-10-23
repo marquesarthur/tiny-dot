@@ -23,11 +23,6 @@ public class MissingDeclarationTest {
     public void setUp() {
     }
 
-    private void assertErrors(String expectedMsg, ProgramOutput output) {
-        RuntimeException error = Iterables.getFirst(output.getErrors(), null);
-        assertNotNull(error);
-        assertEquals(expectedMsg, error.getMessage());
-    }
 
     @Test
     public void analyzeValidInput() {
@@ -41,7 +36,10 @@ public class MissingDeclarationTest {
         this.dotProgram = new DotProgram("invalid/missing.circle.tdot");
         ProgramOutput output = this.dotProgram.compile();
         assertEquals(1, output.getStatus());
-        assertErrors( "Invalid edge. Language does not contain a shape declared as [Foo]", output);
+
+        RuntimeException error = Iterables.getFirst(output.getErrors(), null);
+        assertNotNull(error);
+        assertEquals("Invalid edge. Language does not contain a shape declared as [Foo]", error.getMessage());
     }
 
     @Test
@@ -49,6 +47,9 @@ public class MissingDeclarationTest {
         this.dotProgram = new DotProgram("invalid/missing.square.tdot");
         ProgramOutput output = this.dotProgram.compile();
         assertEquals(1, output.getStatus());
-        assertErrors("Invalid edge. Language does not contain a shape declared as [Bar]", output);
+
+        RuntimeException error = Iterables.getFirst(output.getErrors(), null);
+        assertNotNull(error);
+        assertEquals("Invalid edge. Language does not contain a shape declared as [Bar]", error.getMessage());
     }
 }

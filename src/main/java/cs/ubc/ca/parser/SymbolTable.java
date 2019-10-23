@@ -5,37 +5,52 @@ import cs.ubc.ca.ast.IListerner;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class SymbolTable implements IListerner {
+public class SymbolTable  {
 
-    private Map<String, ShapeNode> table;
+    public static Map<String, ShapeNode> table = new HashMap<>();
+    ;
 
-    public SymbolTable() {
-        this.table = new HashMap<>();
+
+    public static int size() {
+        return SymbolTable.table.size();
     }
 
-    public int size() {
-        return this.table.size();
+    public static boolean contains(String name) {
+        return SymbolTable.table.containsKey(name);
     }
 
-    public boolean contains(String name) {
-        return this.table.containsKey(name);
+    public static ShapeNode get(String name) {
+        return SymbolTable.table.get(name);
     }
 
-    public ShapeNode get(String name) {
-        return this.table.get(name);
+    public static void insert(String name, ShapeNode node) {
+        SymbolTable.table.put(name, node);
     }
 
-    public void insert(String name, ShapeNode node) {
-        this.table.put(name, node);
+    private final DigraphNode root;
+
+
+    private List<IListerner> listeners;
+
+    public SymbolTable(DigraphNode node) {
+        super();
+        this.root = node;
+    }
+
+    public void traverse() {
+        this.visit();
     }
 
 
-    public void visit(Object evt) {
-        if (evt instanceof ShapeNode) {
-            ShapeNode shapeNode = (ShapeNode) evt;
-            this.insert(shapeNode.getShape().getName(), shapeNode);
-        }
+    public void visit() {
+            for (ShapeNode s: this.root.shapeChildren){
+                SymbolTable.insert(s.getShape().getName(), s);
+            }
+
+
     }
+
 }
